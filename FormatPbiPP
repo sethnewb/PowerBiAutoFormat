@@ -1,0 +1,37 @@
+Sub FormatPbiPP()
+    ' AutoFormat PowerBi Powerpoint into a
+    ' Cleaner and more standardized format
+
+    Dim Sld As Slide
+    Dim Pic As Shape
+    Dim PicLft As Long
+    Dim PicTp As Long
+    Dim Lp As Long
+    
+    ' Remove the black PowerBI title page
+    ActivePresentation.Slides(1).Delete
+
+    ' Loop through each slide of the presentation
+    '   for each slide with a hyperlink
+    '       delete hyperlink
+    '   for each image in presentation
+    '       lock the aspect ration
+    '       resize to 973 (roughly 13.52)
+    '       Align to center
+    For Each Sld In ActivePresentation.Slides
+        For Lp = Sld.Hyperlinks.Count To 1 Step -1
+            Sld.Hyperlinks(Lp).Delete
+        Next Lp
+        For Each Pic In Sld.Shapes
+            Pic.LockAspectRatio = msoTrue
+            Pic.Width = 973
+            With ActivePresentation.PageSetup
+                PicLft = Pic.Left
+                PcTp = Pic.Top
+                Pic.Left = (.SlideWidth / 2) - (Pic.Width / 2)
+                Pic.Top = (.SlideHeight / 2) - (Pic.Height / 2)
+            End With
+        Next Pic
+    Next Sld
+    
+End Sub
